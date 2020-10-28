@@ -21,7 +21,7 @@ Route::middleware('auth')->get('/user', function (Request $request) {
 });
 
 //create a user route
-Route::get('/user-create', function (Request $request) {
+Route::post('/user-create', function (Request $request) {
     //Create a user based on the request data that is sent to api
     App\Models\User::create([
         'name' => 'Vlad',
@@ -31,7 +31,7 @@ Route::get('/user-create', function (Request $request) {
 });
 
 //login a user
-Route::get('/login', function () {
+Route::post('/login', function () {
     // $credentials = [
     //     'name' => 'Vlad',
     //     'password' => 'zxcvbnm1'
@@ -54,3 +54,10 @@ Route::middleware('auth')->get('/me', function() {
 });
 
 //logout a user
+Route::middleware('auth')->post('/logout', function() {
+    Auth::guard('api')->logout();
+    return response()->json([
+        'status' => 'success',
+        'message' => 'logout'
+    ], 200);
+});
