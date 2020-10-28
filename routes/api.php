@@ -17,12 +17,14 @@ use Illuminate\Support\Facades\Hash;
 */
 
 //create a user
-Route::post('/user-create', function (Request $request) {
+Route::post('/user-create', function () {
     //Create a user based on the request data that is sent to api
+    $credentials = request()->only(['name', 'email', 'password']);
+
     App\Models\User::create([
-        'name' => 'Vlad',
-        'email' => 'vlad@email.com',
-        'password' => Hash::make('zxcvbnm1')
+        'name' => $credentials['name'],
+        'email' => $credentials['email'],
+        'password' => Hash::make($credentials['password'])
     ]);
 });
 
