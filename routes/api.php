@@ -16,11 +16,7 @@ use Illuminate\Support\Facades\Hash;
 |
 */
 
-Route::middleware('auth')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-//create a user route
+//create a user
 Route::post('/user-create', function (Request $request) {
     //Create a user based on the request data that is sent to api
     App\Models\User::create([
@@ -32,11 +28,6 @@ Route::post('/user-create', function (Request $request) {
 
 //login a user
 Route::post('/login', function () {
-    // $credentials = [
-    //     'name' => 'Vlad',
-    //     'password' => 'zxcvbnm1'
-    // ];
-
     //request email and password that is sent to api route
     $credentials = request()->only(['email', 'password']);
 
@@ -61,3 +52,24 @@ Route::middleware('auth')->post('/logout', function() {
         'message' => 'logout'
     ], 200);
 });
+
+
+//request testing
+//Route::get('/requestTest', function (Request $request) {
+//    return response()->json($request->all());
+//});
+
+//route to post a to do, the controller checks for authorization token
+Route::post('/todo/create', [\App\Http\Controllers\TodosController::class, 'store']);
+
+//route to get all todos
+Route::get('/todos', [\App\Http\Controllers\TodosController::class, 'index']);
+
+//route to get one to do
+Route::get('/todo/{id}', [\App\Http\Controllers\TodosController::class, 'show']);
+
+//route to update a to do
+Route::put('/todo/{id}/update', [\App\Http\Controllers\TodosController::class, 'update']);
+
+//route to delete a to do
+Route::delete('/todo/{id}/delete', [\App\Http\Controllers\TodosController::class, 'destroty']);
